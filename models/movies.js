@@ -5,7 +5,7 @@ const SchemaMovies= new schema({
     director_id: mongoose.Schema.Types.ObjectId,
     title:{
     type: String,
-    required=true,
+    required : true
     },
 
     category: String,

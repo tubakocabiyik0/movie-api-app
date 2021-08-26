@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose=require('mongoose');
-
+const bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var movieRouter = require('./routes/movie');
@@ -22,11 +22,16 @@ mongoose.connect('mongodb://localhost/movie-app',{useNewUrlParser:true}).then(()
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+
 
 app.use('/', indexRouter);
 app.use('/api/movie', movieRouter);
@@ -44,7 +49,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({error:{message:err.message,code:err.code}});
 });
 
 module.exports = app;
