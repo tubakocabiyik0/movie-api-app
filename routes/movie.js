@@ -27,7 +27,21 @@ res.json(data);
 
 //get all movies
 router.get('/', function (req, res, next) {
- const promise= Movie.find({});
+ const promise= Movie.aggregate([
+   {
+     $lookup:{
+     from:'directors',
+     localField:'director_id',
+     foreignField:'_id',
+     as:'director'
+
+     },
+   }
+ ]);
+
+
+
+
  promise.then((data)=>{
  res.json(data);
  }).catch((err)=>{

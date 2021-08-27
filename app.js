@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var movieRouter = require('./routes/movie');
-
+var directorRouter = require('./routes/directors');
 
 var app = express();
 
@@ -35,6 +35,8 @@ app.use(bodyParser.json());
 
 app.use('/', indexRouter);
 app.use('/api/movie', movieRouter);
+app.use('/api/director', directorRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

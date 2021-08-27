@@ -15,4 +15,4 @@ const directorsSchema= new Schema({
 
 });
 
-module.exports=mongoose.Model('director',directorsSchema);
+module.exports=mongoose.model('director',directorsSchema);
