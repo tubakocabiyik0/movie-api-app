@@ -5,10 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose=require('mongoose');
 const bodyParser = require('body-parser');
+const config=require('./config');
+const middleware=require('./middleware/verify-token');
 
 var indexRouter = require('./routes/index');
 var movieRouter = require('./routes/movie');
 var directorRouter = require('./routes/directors');
+var userRouter=require('./routes/users');
 
 var app = express();
 
@@ -21,7 +24,7 @@ mongoose.connect('mongodb://localhost/movie-app',{useNewUrlParser:true}).then(()
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
+app.set('apiSecretKey',config.api_secret_key);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -34,9 +37,10 @@ app.use(bodyParser.json());
 
 
 app.use('/', indexRouter);
+app.use('/api',middleware);
 app.use('/api/movie', movieRouter);
 app.use('/api/director', directorRouter);
-
+app.use('/',userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
